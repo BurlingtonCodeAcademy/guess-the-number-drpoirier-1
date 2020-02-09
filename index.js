@@ -17,11 +17,6 @@ function ask(questionText) {
 }
 
 start();
-
-async function start() {
-  console.log("Let's play a game where you (human) make up a number and I (computer) try to guess it.")
-  let secretNumber = await ask("What is your secret number?\nI won't peek, I promise...\n");
-  console.log('You entered: ' + secretNumber);
   
 async function start() {
   startGameSetup();
@@ -42,13 +37,14 @@ async function start() {
     let cpuGuessNum = getRandomIntInclusive(min, max);   // Guessing a random number in the range to start
 
     console.log('(This JS pgm currently randomly guesses only once) Is it... ' + cpuGuessNum);   
-    let userRespYorN = await ask('? (Please type a Y or a N only');
+    let userRespYorN = await ask('? (Please type a Y or a N only)');
   // in case user used lower case - 
     let userRespYorNUC = userRespYorN.toUpperCase().trim();  
     
   // if correctAnswer();  
     if (userRespYorNUC === 'Y') {
-    console.log('You stated that this was the correct number, Yea!');  // game exits
+    console.log('You stated that this was the correct number, Yea!');  
+    console.log('The program has tried: ' + pgmTries + ' times.'); // game exits with 1 try (highly unlikely)
     process.exit();
   } else if (userRespYorNUC == 'N') {
     console.log('You stated it was not correct, or ' + userRespYorNUC + ' , Sorry.');
@@ -56,7 +52,7 @@ async function start() {
     cheatMsg1();
   }
 
-    console.log('The pgm has tried: ' + pgmTries + ' times.');
+    console.log('The program has tried: ' + pgmTries + ' times.');
     let maxTries = (Math.round((Math.log2((max)+1))));
     console.log('The maximum number of tries this program should theorectially only take is: ' + maxTries);
 
@@ -79,7 +75,7 @@ async function start() {
 
      // else needs to go to end of pgm after - 
    } else {
-     cheatMsgUnexpectedErr();
+     cheatMsgUnexpectedErr(); // putting this in for messages that don't equal y or n
    }
 
 endGameMsg(); 
@@ -109,7 +105,7 @@ function getRandomIntInclusive(min, max) {
  } */  // commenting out for now until more code is written
 
  function endGameMsg() {
-  console.log("We're done then. Goodbye.");
+  console.log("We're done then. Goodbye."); // temporarily ending game after one random try
  }
 
  function cheatMsgRangeErr() {
@@ -123,15 +119,3 @@ function getRandomIntInclusive(min, max) {
   endGameMsg();
   process.exit();
 } 
-
-  // if the player says "yes" exit the game 
-
-  // if the player says no
-    // ask if it's higher or lower
-    // if it's higher modify min value
-    // if it's lower modify max value 
-
-    // guess a new number 
-
-  process.exit();
-}
