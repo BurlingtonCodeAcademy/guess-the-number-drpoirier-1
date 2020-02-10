@@ -13,7 +13,7 @@ const rl = readline.createInterface(process.stdin, process.stdout);
 // hard coding to min & max to begin with ; later these will be changed as user inputs for what they want
 let min=1;    // not inclusive of 0
 let max=100;  // at first limit the max to 100, then increase it to 500 or give user a choice 
-
+let cpuGuessNum = 0; // setting to zero as a default ? (also makes it a global so it can change thruought)
 let range = ((max - min)+1); // range = ((max# - min)+1) so it's not 0 
 
 // function source = MDN - The maximum (max) is inclusive and the minimum (min) is inclusive -
@@ -43,7 +43,7 @@ async function start() {
 if ((secretNumber >= min) && (secretNumber <= max)) {   
 
 // mainGuessing 
-  let cpuGuessNum = getRandomIntInclusive(min, max);   // Guessing a random number in the range to start
+  cpuGuessNum = getRandomIntInclusive(min, max);   // Guessing a random number in the range to start
   console.log('(This program currently randomly guesses only the first try) Is it... ' + cpuGuessNum); 
   let pgmTries = 1; 
   let userRespYorN = await ask('? (Please type a Y or a N only) -> ');
@@ -69,19 +69,19 @@ if ((secretNumber >= min) && (secretNumber <= max)) {
   // in case the user used lower case - 
   let userRespHorLUC = userRespHorL.toUpperCase();  
     
-  // goes to High Logic -  
-    if (userRespHorLUC == 'H') {
+  // goes to High/Low Logic -  
+    if (userRespHorLUC == 'H') {  // goes to Higher logic 
    (gotoHighLoop = (true)); 
      // get a Higher range --
-     let newMin = cpuGuessNum;
+     let newMin = (cpuGuessNum + 1); // causes it to not include cur low guess
      let newRange = (max - newMin);
-     let cpuGuessNum = (newRange/2);
+     cpuGuessNum = (newRange/2);
   } else if (userRespHorLUC == 'L') {  // goes to Lower Logic
     (gotoLowLoop = (true));
     // get a lower range --
-     let newMax = cpuGuessNum;
+     let newMax = (cpuGuessNum - 1); // causes it to no include cur high guess 
      let newRange = (newMax - min);
-     let cpuGuessNum = (newRange/2);
+     cpuGuessNum = (newRange/2);
      
     // else needs to go to end of pgm after - 
   } else {
@@ -127,3 +127,5 @@ function cheatMsgUnexpectedErr() {
   endGameMsg();
   process.exit();
 } 
+
+// doing reverse gave next...
